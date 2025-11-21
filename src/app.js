@@ -51,7 +51,7 @@ app.get("/user", async (req, res) => {
 connectDb()
     .then(() => {
         console.log("Database connection is established");
-        app.listen(3000, () => console.log("Server is successfully listen on the port 3000"));
+        app.listen(process.env.PORT || 5000, () => console.log("Server is successfully listen on the port 3000"));
     })
     .catch((err) => {
         console.log("Error in establishing connection with database");
