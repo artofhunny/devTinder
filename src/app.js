@@ -6,7 +6,7 @@ const { validateSignupData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const cros = require("cors");
+const cors = require("cors");
 require("dotenv").config();
 
 const { userAuth } = require("./middleware/auth");
@@ -16,14 +16,23 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cros({
-    // origin: "http://localhost:5173",
-    // origin: true,
-    origin: ["http://192.168.1.3:5173", "http://localhost:5173", "https://devtinder-web.pages.dev/"],
-    credentials: true,
+app.use(
+  cors({
+    origin: ["https://devtinder-web.pages.dev", "http://localhost:5173", "http://192.168.1.3:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    exposedHeaders: ["Set-Cookie"],
-}));
+    credentials: true,
+  })
+);
+app.options("*", cors());
+// app.use(cors({
+//     // origin: "http://localhost:5173",
+//     // origin: true,
+//     origin: ["http://192.168.1.3:5173", "http://localhost:5173", "https://devtinder-web.pages.dev"],
+//     credentials: true,
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     exposedHeaders: ["Set-Cookie"],
+// }));
 
 const authRouter = require("./router/auth");
 const profileRouter = require("./router/profile");
