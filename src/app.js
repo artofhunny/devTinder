@@ -24,7 +24,7 @@ app.use(
     credentials: true,
   })
 );
-app.options("*", cors());
+app.options(/.*/, cors());
 // app.use(cors({
 //     // origin: "http://localhost:5173",
 //     // origin: true,
