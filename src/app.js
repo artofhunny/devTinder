@@ -13,13 +13,16 @@ const { userAuth } = require("./middleware/auth");
 
 const app = express();
 
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cros({
     // origin: "http://localhost:5173",
     // origin: true,
-    origin: ["http://192.168.1.3:5173", "http://localhost:5173"],
+    origin: ["http://192.168.1.3:5173", "http://localhost:5173", "https://devtinder-web.pages.dev/"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Set-Cookie"],
 }));
 
 const authRouter = require("./router/auth");

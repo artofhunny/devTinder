@@ -40,8 +40,16 @@ router.post("/signup", async (req, res) => {
     const user = new User(dataObj);
     const savedUser = await user.save();
 
-    const token = await jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
-    res.cookie("token", token);
+    const token = await jwt.sign(
+      { _id: savedUser._id },
+      process.env.JWT_SECRET
+    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.json({ message: "User added successfully", data: savedUser });
   } catch (err) {
@@ -66,8 +74,9 @@ router.post("/login", async (req, res) => {
       const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
       res.cookie("token", token, {
         httpOnly: true,
-        sameSite: "lax",
-        secure: false, // true ONLY if HTTPS
+        secure: true,
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
       res.send({ message: "Login successfully", data: user });
@@ -80,8 +89,15 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
+  // res.cookie("token", null, {
+  //   expires: new Date(Date.now()),
+  // });
+
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0),
   });
 
   res.send("Logout successfull!");
