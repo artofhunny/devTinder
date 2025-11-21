@@ -37,7 +37,7 @@ router.patch("/profile/edit", userAuth, async (req, res) => {
         });
     }
     catch(err){
-        res.send("Error : " + err.message);
+        res.status(400).send("Error : " + err.message);
     }
 });
 

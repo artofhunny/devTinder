@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: ["https://devtinder-web.pages.dev", "http://localhost:5173", "http://192.168.1.3:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
